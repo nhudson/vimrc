@@ -1,7 +1,7 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'neoclide/coc.nvim', {'branch': 'master'}
+Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 Plug 'scrooloose/nerdtree'
 Plug 'altercation/vim-colors-solarized'
 Plug 'Yggdroot/indentLine'
