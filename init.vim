@@ -20,6 +20,8 @@ Plug 'junegunn/limelight.vim'
 Plug 'w0rp/ale'
 Plug 'rust-lang/rust.vim'
 Plug 'github/copilot.vim'
+Plug 'lotabout/skim', { 'dir': '~/.skim', 'do': './install' }
+Plug 'lotabout/skim.vim'
 
 call plug#end()
 
@@ -639,3 +641,7 @@ let g:rustfmt_autosave = 1
 " call PrototoolFormatFixEnable()
 " Uncomment this to disable creating Protobuf files from a template by default.
 " call PrototoolCreateDisable()
+
+" =================== skim-vim ========================
+command! -bang -nargs=* Ag call fzf#vim#ag_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))
+command! -bang -nargs=* Rg call fzf#vim#rg_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))
