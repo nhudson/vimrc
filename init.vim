@@ -13,7 +13,8 @@ Plug 'hashivim/vim-terraform'
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'vim-scripts/bash-support.vim'
 Plug 'kaicataldo/material.vim'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+"Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'plasticboy/vim-markdown'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
@@ -22,6 +23,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'github/copilot.vim'
 Plug 'lotabout/skim', { 'dir': '~/.skim', 'do': './install' }
 Plug 'lotabout/skim.vim'
+Plug 'mustache/vim-mustache-handlebars'
 
 call plug#end()
 
@@ -645,3 +647,11 @@ let g:rustfmt_autosave = 1
 " =================== skim-vim ========================
 command! -bang -nargs=* Ag call fzf#vim#ag_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))
 command! -bang -nargs=* Rg call fzf#vim#rg_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))
+
+" =================== disable stuff ========================
+" Disable Ruby because it sucks
+let g:loaded_ruby_provider = 0
+" Disable perl because it sucks
+let g:loaded_perl_provider = 0
+" Disable nodejs because it sucks
+let g:loaded_node_provider = 0
