@@ -13,17 +13,18 @@ Plug 'hashivim/vim-terraform'
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'vim-scripts/bash-support.vim'
 Plug 'kaicataldo/material.vim'
-"Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'plasticboy/vim-markdown'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'rust-lang/rust.vim'
 Plug 'github/copilot.vim'
 Plug 'lotabout/skim', { 'dir': '~/.skim', 'do': './install' }
 Plug 'lotabout/skim.vim'
 Plug 'mustache/vim-mustache-handlebars'
+Plug 'wfxr/protobuf.vim'
+Plug 'bufbuild/vim-buf'
 
 call plug#end()
 
@@ -621,10 +622,16 @@ let g:limelight_priority = -1
 "let g:ale_lint_on_text_changed = 'never'
 "
 " Rust completion
-let g:ale_linters = {'rust': ['analyzer']}
+"let g:ale_linters = {'rust': ['analyzer']}
 syntax enable
 filetype plugin indent on
 let g:rustfmt_autosave = 1
+
+let g:ale_linters = {'proto': ['buf-lint'], 'rust': ['analyzer']}
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_linters_explicit = 1
+
+let g:ale_fixers = {'proto': ['buf-format']}
 
 " We generally have <leader> mapped to ",", uncomment this to set leader.
 "let mapleader=","
@@ -655,3 +662,5 @@ let g:loaded_ruby_provider = 0
 let g:loaded_perl_provider = 0
 " Disable nodejs because it sucks
 let g:loaded_node_provider = 0
+" Set nodejs bin for copilot
+let g:copilot_node_command = '/Users/nhudson/Downloads/node-v16.15.1-darwin-arm64/bin/node'
