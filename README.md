@@ -1,9 +1,5 @@
 # neovim configuration
 
-This will serve as documentation for my vimrc config used on all my machines.
-For now you will need to install [vim-plug](junegunn/vim-plug) for this
-configuration to work with the plugins, though the plugin's could be installed
-with other vim plugin managers.
+This is all changing rapidly right now.  I am switching my configuration over to a complete lua configuration.
 
-Put this config into `$HOME/.config/nvim/` and you might want to link it to
-`$HOME/.vimrc`
+Inspiration is mostly from [https://github.com/Allaman/nvim](https://github.com/Allaman/nvim) and [https://github.com/ChristianChiarulli](https://github.com/ChristianChiarulli)

@@ -19,12 +19,14 @@ Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'dense-analysis/ale'
 Plug 'rust-lang/rust.vim'
-Plug 'github/copilot.vim'
+"Plug 'github/copilot.vim'
 Plug 'lotabout/skim', { 'dir': '~/.skim', 'do': './install' }
 Plug 'lotabout/skim.vim'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'wfxr/protobuf.vim'
 Plug 'bufbuild/vim-buf'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'sindrets/diffview.nvim'
 
 call plug#end()
 
@@ -205,6 +207,9 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 " disable vim-go :GoDef short cut (gd)
 " this is handled by LanguageClient [LC]
 let g:go_def_mapping_enabled = 0
+
+" Coc Global Settings
+let g:coc_global_extensions = ["coc-go", "coc-json", "coc-snippets", "coc-rls", "coc-rust-analyzer"]
 
 syntax enable
 if has('gui_running')
@@ -576,6 +581,7 @@ let g:terraform_align=1
 
 "================ vim-markdown ======================
 let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_conceal = 0
 
 "================ markdown-preview ======================
 nmap <C-s> <Plug>MarkdownPreview
@@ -663,4 +669,4 @@ let g:loaded_perl_provider = 0
 " Disable nodejs because it sucks
 let g:loaded_node_provider = 0
 " Set nodejs bin for copilot
-let g:copilot_node_command = '/Users/nhudson/Downloads/node-v16.15.1-darwin-arm64/bin/node'
+let g:copilot_node_command = '/Users/nhudson/Downloads/node-v16.16.0/bin/node'
