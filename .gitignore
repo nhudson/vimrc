@@ -1,4 +1,4 @@
 snapshots/*
 plugin/*
 lua/node_modules/*
-lua/package.json
+lua/package*.json
