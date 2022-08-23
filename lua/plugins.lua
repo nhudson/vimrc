@@ -62,6 +62,8 @@ packer.startup(function(use)
   if settings.theme == "gruvbox" then
     -- Gruvbox because it looks amazing
     use({ "ellisonleao/gruvbox.nvim", config = get_config("gruvbox") })
+  elseif settings.theme == "gruvbox-flat" then
+    use({ "eddyekofo94/gruvbox-flat.nvim", config = get_config("gruvbox-flat") })
   else
     -- Gruvbox because it looks amazing
     use({ "ellisonleao/gruvbox.nvim", config = get_config("gruvbox") })
@@ -171,6 +173,14 @@ packer.startup(function(use)
   use({ "williamboman/mason.nvim",
     requires = { "williamboman/mason-lspconfig.nvim", "WhoIsSethDaniel/mason-tool-installer.nvim" },
     config = get_config("mason"),
+  })
+
+  -- folke/trouble.nvim
+  use({ 'folke/trouble.nvim',
+    requires = "kyazdani42/nvim-web-devicons",
+    config = function()
+      require("trouble").setup {}
+    end
   })
 
 

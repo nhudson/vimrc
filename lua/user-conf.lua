@@ -1,7 +1,7 @@
 local M = {}
 
--- theme: gruvbox; default is gruvbox
-M.theme = "gruvbox"
+-- theme: gruvbox, gruvbox-flat; default is gruvbox
+M.theme = "gruvbox-flat"
 -- Toggle global status line
 M.global_statusline = true
 -- use rg instead of grep
