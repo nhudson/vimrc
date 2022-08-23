@@ -9,7 +9,7 @@ nls.setup({
       extra_args = { "--single-quote", "false" },
     }),
     nls.builtins.formatting.terraform_fmt,
-    nls.builtins.formatting.black,
+    nls.builtins.formatting.black.with({ extra_args = { "--fast" } }),
     nls.builtins.formatting.goimports,
     nls.builtins.formatting.gofumpt,
     nls.builtins.formatting.latexindent.with({
@@ -17,6 +17,8 @@ nls.setup({
     }),
     nls.builtins.code_actions.shellcheck,
     nls.builtins.diagnostics.vale,
+    nls.builtins.diagnostics.flake8,
+    nls.builtins.diagnostics.markdownlint,
   },
   on_attach = function(client, bufnr)
     if client.supports_method("textDocument/formatting") then
@@ -25,9 +27,7 @@ nls.setup({
         group = augroup,
         buffer = bufnr,
         callback = function()
-          if AUTOFORMAT_ACTIVE then -- global var defined in functions.lua
-            vim.lsp.buf.format({ bufnr = bufnr })
-          end
+          vim.lsp.buf.format({ bufnr = bufnr })
         end,
       })
     end

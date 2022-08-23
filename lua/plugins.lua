@@ -73,7 +73,7 @@ packer.startup(function(use)
   use({ "christianchiarulli/lua-dev.nvim" })
 
   -- https://github.com/echasnovski/mini.nvim
-  use({ "echasnovski/mini.nvim", branch = "stable", config = get_config("mini") })
+  use({ "echasnovski/mini.nvim", config = get_config("mini") })
 
   -- https://github.com/akinsho/toggleterm.nvim
   use({ "akinsho/nvim-toggleterm.lua", config = get_config("toggleterm") })
@@ -116,7 +116,7 @@ packer.startup(function(use)
 
   -- Rust
   use({ "christianchiarulli/rust-tools.nvim", branch = "modularize_and_inlay_rewrite" })
-  use({ "Saecki/crates.nvim", config = get_config("crates") })
+  use({ "Saecki/crates.nvim", after = { 'nvim-lua/plenary.nvim' }, config = get_config("crates") })
 
   -- Markdown
   use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", ft = "markdown" })

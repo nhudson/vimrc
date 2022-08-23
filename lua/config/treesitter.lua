@@ -1,5 +1,4 @@
 local treesetter = require("nvim-treesitter")
-local wo = vim.wo
 
 treesetter.setup({
   ensure_installed = {

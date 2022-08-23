@@ -80,7 +80,7 @@ M.toggle_diagnostics = function()
   end
 end
 
-AUTOFORMAT_ACTIVEG = true
+AUTOFORMAT_ACTIVE = true
 -- toggle null-ls's autoformatting
 M.toggle_autoformat = function()
   M.notify("Toggling autoformatting", "info", "functions.lua")
