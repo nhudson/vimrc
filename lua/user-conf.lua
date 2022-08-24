@@ -1,6 +1,6 @@
 local M = {}
 
--- theme: gruvbox, gruvbox-flat; default is gruvbox
+-- theme: gruvbox, gruvbox-flat; default is catppuccino
 M.theme = "gruvbox-flat"
 -- Toggle global status line
 M.global_statusline = true

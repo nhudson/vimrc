@@ -2,3 +2,4 @@ snapshots/*
 plugin/*
 lua/node_modules/*
 lua/package*.json
+new-old/*

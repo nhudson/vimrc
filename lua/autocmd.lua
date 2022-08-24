@@ -24,12 +24,29 @@ api.nvim_create_autocmd("Filetype", {
   end,
 })
 
+-- Close nvim if NvimTree is only running buffer
+api.nvim_create_autocmd(
+  "BufEnter",
+  { command = [[if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif]] }
+)
+
 -- Highlight on yank
 local yankGrp = api.nvim_create_augroup("YankHighlight", { clear = true })
 api.nvim_create_autocmd("TextYankPost", {
   command = "silent! lua vim.highlight.on_yank()",
   group = yankGrp,
 })
+-- go to last loc when opening a buffer
+api.nvim_create_autocmd(
+  "BufReadPost",
+  { command = [[if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif]] }
+)
+-- windows to close with "q"
+api.nvim_create_autocmd("FileType", {
+  pattern = { "help", "startuptime", "qf", "lspinfo", "fugitive", "null-ls-info", "dap-float" },
+  command = [[nnoremap <buffer><silent> q :close<CR>]],
+})
+api.nvim_create_autocmd("FileType", { pattern = "man", command = [[nnoremap <buffer><silent> q :quit<CR>]] })
 
 -- disable list option in certain filetypes
 api.nvim_create_autocmd("FileType", { pattern = { "NeoGitStatus" }, command = [[setlocal list!]] })

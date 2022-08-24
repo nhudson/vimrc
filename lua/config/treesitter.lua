@@ -1,6 +1,4 @@
-local treesetter = require("nvim-treesitter")
-
-treesetter.setup({
+require("nvim-treesitter.configs").setup({
   ensure_installed = {
     "bash",
     "css",
@@ -18,7 +16,6 @@ treesetter.setup({
     "lua",
     "markdown",
     "python",
-    "rust",
     "toml",
     "yaml",
   }, -- one of "all", "maintained" (parsers with maintainers), or a list of languages

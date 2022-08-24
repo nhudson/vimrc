@@ -1,6 +1,4 @@
-local window = require("nvim-window")
-
-window.setup({
+require("nvim-window").setup({
     -- The characters available for hinting windows.
     chars = {"a", "s", "f", "g", "h", "j", "k", "l"},
 

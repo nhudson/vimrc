@@ -2,6 +2,7 @@ local settings = require("user-conf")
 local utils = require("functions")
 local o = vim.opt
 local fn = vim.fn
+local g = vim.g
 
 vim.cmd("set inccommand=split")
 o.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50" -- block in normal and beam cursor in insert mode
@@ -9,7 +10,7 @@ o.updatetime = 300 -- faster completion
 o.timeoutlen = 400 -- time to wait for a mapped sequence to complete (in milliseconds)
 o.ttimeoutlen = 0 -- Time in milliseconds to wait for a key code sequence to complete
 o.backup = false -- creates a backup file
-o.swapfile = false -- enable/disable swap file creation
+o.swapfile = true -- enable/disable swap file creation
 o.dir = fn.stdpath("data") .. "/swp" -- swap file directory
 o.undofile = true -- enable/disable undo file creation
 o.undodir = fn.stdpath("data") .. "/undodir" -- set undo directory
@@ -67,3 +68,5 @@ o.wildignore = [[
 *.swp,.lock,.DS_Store,._*
 */tmp/*,*.so,*.swp,*.zip,**/node_modules/**,**/target/**,**.terraform/**"
 ]]
+-- Disable providers I don't care about
+g.loaded_perl_provider = 0

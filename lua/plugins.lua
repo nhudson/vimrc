@@ -1,8 +1,7 @@
 local settings = require("user-conf")
 local fn = vim.fn
 
--- Automatically install packer
-local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
+local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
 -- returns the require for use in `config` parameter of packer's use
 -- expects the name of the config file
@@ -10,37 +9,22 @@ local function get_config(name)
   return string.format('require("config/%s")', name)
 end
 
----@diagnostic disable-next-line: missing-parameter
+-- bootstrap packer if not installed
 if fn.empty(fn.glob(install_path)) > 0 then
-  PACKER_BOOTSTRAP = fn.system {
+  fn.system({
     "git",
     "clone",
-    "--depth",
-    "1",
     "https://github.com/wbthomason/packer.nvim",
     install_path,
-  }
-  print "Installing packer close and reopen Neovim..."
-  vim.cmd [[packadd packer.nvim]]
+  })
+  print("Installing packer...")
+  vim.api.nvim_command("packadd packer.nvim")
 end
 
--- Autocommand that reloads neovim whenever you save the plugins.lua file
-vim.cmd [[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
-  augroup end
-]]
-
--- Use a protected call so we don't error out on first use
-local status_ok, packer = pcall(require, "packer")
-if not status_ok then
-  return
-end
+-- initialize and configure packer
+local packer = require("packer")
 
 packer.init({
-  ensure_dependencies = true,
-  snapshot_path = fn.stdpath "config" .. "/snapshots", -- enable config snapshots
   enable = true, -- enable profiling via :PackerCompile profile=true
   threshold = 0, -- the amount in ms that a plugins load time must be over for it to be included in the profile
   max_jobs = 20, -- Limit the number of simultaneous jobs. nil means no limit. Set to 20 in order to prevent PackerSync form being "stuck" -> https://github.com/wbthomason/packer.nvim/issues/746
@@ -49,46 +33,43 @@ packer.init({
     open_fn = function()
       return require("packer.util").float({ border = "rounded" })
     end,
-    prompt_border = "rounded", -- Border style of prompt popups.
   },
 })
 
 packer.startup(function(use)
   -- actual plugins list
+  use("wbthomason/packer.nvim")
 
-  -- Plugin Mangager
-  use({ "wbthomason/packer.nvim" }) -- Have packer manage itself
+  use({
+    "nvim-telescope/telescope.nvim",
+    requires = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } },
+    config = get_config("telescope"),
+  })
 
-  if settings.theme == "gruvbox" then
-    -- Gruvbox because it looks amazing
-    use({ "ellisonleao/gruvbox.nvim", config = get_config("gruvbox") })
-  elseif settings.theme == "gruvbox-flat" then
-    use({ "eddyekofo94/gruvbox-flat.nvim", config = get_config("gruvbox-flat") })
-  else
-    -- Gruvbox because it looks amazing
-    use({ "ellisonleao/gruvbox.nvim", config = get_config("gruvbox") })
-  end
+  use({ "jvgrootveld/telescope-zoxide" })
+  use({ "crispgm/telescope-heading.nvim" })
+  use({ "nvim-telescope/telescope-symbols.nvim" })
+  use({ "nvim-telescope/telescope-file-browser.nvim" })
+  use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+  use({ "nvim-telescope/telescope-packer.nvim" })
+  use({ "nvim-telescope/telescope-ui-select.nvim" })
 
-  -- Lua Development
-  use({ "nvim-lua/plenary.nvim" }) -- Useful lua functions used ny lots of plugins
-  use({ "nvim-lua/popup.nvim" })
-  use({ "christianchiarulli/lua-dev.nvim" })
+  use({ "kyazdani42/nvim-tree.lua", config = get_config("nvim-tree") })
 
-  -- https://github.com/echasnovski/mini.nvim
-  use({ "echasnovski/mini.nvim", config = get_config("mini") })
+  use({ "numToStr/Navigator.nvim", config = get_config("navigator") })
 
-  -- https://github.com/akinsho/toggleterm.nvim
-  use({ "akinsho/nvim-toggleterm.lua", config = get_config("toggleterm") })
+  use({ "windwp/nvim-autopairs", config = get_config("nvim-autopairs") })
 
-  -- LSP
-  -- https://github.com/jose-elias-alvarez/null-ls.nvim
-  use({ "jose-elias-alvarez/null-ls.nvim" })
-  --
-  use({ "famiu/bufdelete.nvim" })
-  use({ "neovim/nvim-lspconfig", config = get_config("lsp") })
-  use({ "onsails/lspkind-nvim", requires = { "famiu/bufdelete.nvim" } })
+  use({
+    "nvim-treesitter/nvim-treesitter",
+    config = get_config("treesitter"),
+    run = ":TSUpdate",
+  })
 
-  -- cmp setup
+  use("nvim-treesitter/nvim-treesitter-textobjects")
+
+  use("RRethy/nvim-treesitter-endwise")
+
   use({
     "hrsh7th/nvim-cmp",
     requires = {
@@ -104,36 +85,202 @@ packer.startup(function(use)
     config = get_config("cmp"),
   })
 
-  -- https://github.com/zbirenbaum/copilot.lua instead of github/copilot.vim
-  -- use({ "github/copilot.vim" })
-  use({ "zbirenbaum/copilot.lua", event = { "VimEnter" },
-    module = "copilot",
-    config = function()
-    vim.defer_fn(function()
-      require("config/copilot")
-      end, 100)
-    end,
+  use({ "rafamadriz/friendly-snippets" })
+  use({
+    "L3MON4D3/LuaSnip",
+    requires = "saadparwaiz1/cmp_luasnip",
+    config = get_config("luasnip"),
   })
-  use({ "zbirenbaum/copilot-cmp", config = get_config("cmp") })
 
-  -- Rust
-  use({ "christianchiarulli/rust-tools.nvim", branch = "modularize_and_inlay_rewrite" })
-  use({ "Saecki/crates.nvim", after = { 'nvim-lua/plenary.nvim' }, config = get_config("crates") })
+  -- requirement for Neogit
+  use({
+    "sindrets/diffview.nvim",
+    cmd = {
+      "DiffviewOpen",
+      "DiffviewClose",
+      "DiffviewToggleFiles",
+      "DiffviewFocusFiles",
+    },
+    config = get_config("diffview"),
+  })
 
-  -- Markdown
-  use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", ft = "markdown" })
+  use({
+    "TimUntersberger/neogit",
+    requires = { "nvim-lua/plenary.nvim" },
+    cmd = "Neogit",
+    config = get_config("neogit"),
+  })
 
-  -- nvim-navic
-  use({ "SmiteshP/nvim-navic" })
+  use({ "f-person/git-blame.nvim", config = get_config("git-blame") })
 
-  --
+  use({
+    "lewis6991/gitsigns.nvim",
+    requires = { "nvim-lua/plenary.nvim" },
+    config = get_config("gitsigns"),
+  })
+
+  use({ "tpope/vim-fugitive" }) -- yeah this is not lua but one of the best Vim plugins ever
+
+  use("p00f/nvim-ts-rainbow")
+
+  use({
+    "kevinhwang91/nvim-bqf",
+    requires = { { "junegunn/fzf", module = "nvim-bqf" }, config = get_config("nvim-bqf") },
+  })
+
+  use("famiu/bufdelete.nvim")
+
+  use({ "neovim/nvim-lspconfig", config = get_config("lsp") })
+
+  use({ "onsails/lspkind-nvim", requires = { "famiu/bufdelete.nvim" } })
+
+  use({
+    "jose-elias-alvarez/null-ls.nvim",
+    requires = { { "nvim-lua/plenary.nvim" } },
+    config = get_config("null-ls"),
+  })
+
+  use({
+    "simrat39/symbols-outline.nvim",
+    cmd = { "SymbolsOutline" },
+    config = get_config("symbols"),
+  })
+
+  use({
+    "lukas-reineke/indent-blankline.nvim",
+    event = "BufReadPre",
+    config = [[require("config/indent-blankline")]],
+  })
+
+  use({
+    "akinsho/nvim-toggleterm.lua",
+    keys = { "<C-n>", "<leader>fl" },
+    config = get_config("toggleterm"),
+  })
+
+  -- TODO: switch to https://github.com/folke/todo-comments.nvim ?
+  use({
+    "folke/todo-comments.nvim",
+    requires = "nvim-lua/plenary.nvim",
+    config = get_config("todo"),
+  })
+
+  use({ "ahmedkhalf/project.nvim", config = get_config("project") })
+
+  use("ironhouzi/starlite-nvim")
+
   use({ "folke/which-key.nvim", config = get_config("which-key") })
 
-  -- golang setup
-  -- ray-x/go.nvim
+  use("junegunn/vim-easy-align") -- no lua alternative, https://github.com/Vonr/align.nvim not working for me
+
+  use({ "rhysd/vim-grammarous", cmd = "GrammarousCheck" })
+
+  use({ "RRethy/vim-illuminate", config = get_config("illuminate") })
+
+  use({
+    "ptzz/lf.vim",
+    requires = "voldikss/vim-floaterm",
+    config = get_config("lf"),
+  })
+
+  if settings.theme == "gruvbox" then
+    use({ "ellisonleao/gruvbox.nvim", config = get_config("gruvbox") })
+  elseif settings.theme == "gruvbox-flat" then
+    use({ "eddyekofo94/gruvbox-flat.nvim", config = get_config("gruvbox-flat") })
+  else
+    use({ "ellisonleao/gruvbox.nvim", config = get_config("gruvbox") })
+  end
+
+  use({ "tweekmonster/startuptime.vim" })
+
+  use({ "ggandor/lightspeed.nvim" })
+
   use({ "ray-x/go.nvim", requires = "ray-x/guihua.lua", config = get_config("go"), ft = { "go" } })
 
-  -- DAP for golang & python
+  use({ "LudoPinelli/comment-box.nvim", config = get_config("comment-box") })
+
+  use({ "rcarriga/nvim-notify", config = get_config("notify") })
+
+  use({ "echasnovski/mini.nvim", branch = "stable", config = get_config("mini") })
+
+  use({
+    "https://gitlab.com/yorickpeterse/nvim-window.git",
+    config = get_config("nvim-window"),
+  })
+
+  use({
+    "waylonwalker/Telegraph.nvim",
+    config = function()
+      require("telegraph").setup({})
+    end,
+  })
+
+  use({ "rhysd/conflict-marker.vim" })
+
+  use({ "edluffy/specs.nvim", config = get_config("specs") })
+
+  use({ "mfussenegger/nvim-ts-hint-textobject" })
+
+  use({
+    "goolord/alpha-nvim",
+    requires = { "kyazdani42/nvim-web-devicons" },
+    config = get_config("alpha-nvim"),
+  })
+
+  use({ "SmiteshP/nvim-navic" })
+
+  use({
+    "j-hui/fidget.nvim",
+    config = function()
+      require("fidget").setup({})
+    end,
+  })
+
+  use({
+    "kevinhwang91/nvim-ufo",
+    requires = "kevinhwang91/promise-async",
+    config = function()
+      require("ufo").setup()
+    end,
+  })
+
+  use({
+    "https://gitlab.com/yorickpeterse/nvim-pqf.git",
+    config = function()
+      require("pqf").setup()
+    end,
+  })
+
+  use({ "Djancyp/cheat-sheet" })
+
+  use({ "vimpostor/vim-tpipeline" })
+
+  use({
+    "anuvyklack/hydra.nvim",
+    requires = "anuvyklack/keymap-layer.nvim", -- needed only for pink hydras
+    config = get_config("hydra"),
+  })
+
+  use({
+    "windwp/nvim-ts-autotag",
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
+  })
+
+  use({
+    "beauwilliams/focus.nvim",
+    config = function()
+      require("focus").setup()
+    end,
+  })
+
+  use({
+    "williamboman/mason.nvim",
+    requires = { "williamboman/mason-lspconfig.nvim", "WhoIsSethDaniel/mason-tool-installer.nvim" },
+    config = get_config("mason"),
+  })
+
   use({
     "mfussenegger/nvim-dap",
     requires = {
@@ -147,41 +294,11 @@ packer.startup(function(use)
     end,
   })
 
-  -- nvim-window
-  use({ "https://gitlab.com/yorickpeterse/nvim-window.git", config = get_config("nvim-window"), })
-
-  -- treesetters
-    use({
-    "nvim-treesitter/nvim-treesitter",
-    config = get_config("treesitter"),
-    run = ":TSUpdate",
-  })
-
-  use("nvim-treesitter/nvim-treesitter-textobjects")
-
-  use("RRethy/nvim-treesitter-endwise")
-
-  -- snippets
-  use({ "rafamadriz/friendly-snippets" })
-  use({
-    "L3MON4D3/LuaSnip",
-    requires = "saadparwaiz1/cmp_luasnip",
-    config = get_config("luasnip"),
-  })
-
-  --
-  use({ "williamboman/mason.nvim",
-    requires = { "williamboman/mason-lspconfig.nvim", "WhoIsSethDaniel/mason-tool-installer.nvim" },
-    config = get_config("mason"),
-  })
-
-  -- folke/trouble.nvim
-  use({ 'folke/trouble.nvim',
-    requires = "kyazdani42/nvim-web-devicons",
-    config = function()
-      require("trouble").setup {}
-    end
-  })
-
-
+  -- Markdown
+  use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", ft = "markdown" })
 end)
+
+-- TODO: ????
+-- use {"lukas-reineke/headlines.nvim", config = get_config("headlines")}
+-- https://github.com/glepnir/lspsaga.nvim
+-- use 'glepnir/lspsaga.nvim'
