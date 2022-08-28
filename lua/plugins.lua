@@ -296,6 +296,11 @@ packer.startup(function(use)
 
   -- Markdown
   use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", ft = "markdown" })
+
+  -- Rust
+  use({ "simrat39/rust-tools.nvim" })
+  --use({ "christianchiarulli/rust-tools.nvim", branch = "modularize_and_inlay_rewrite" })
+  --use({ "Saecki/crates.nvim", after = { "nvim-lua/plenary.nvim" }, config = get_config("crates") })
 end)
 
 -- TODO: ????

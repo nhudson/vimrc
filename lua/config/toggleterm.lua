@@ -10,7 +10,7 @@ require("toggleterm").setup({
       return vim.o.columns * 0.4
     end
   end,
-  open_mapping = "<C-n>",
+  open_mapping = "<c-n>",
   hide_numbers = true, -- hide the number column in toggleterm buffers
   shade_filetypes = {},
   shade_terminals = true,
@@ -18,7 +18,7 @@ require("toggleterm").setup({
   start_in_insert = true,
   insert_mappings = true, -- whether or not the open mapping applies in insert mode
   persist_size = true,
-  direction = "vertical", -- 'vertical' | 'horizontal' | 'window' | 'float',
+  direction = "float", -- 'vertical' | 'horizontal' | 'window' | 'float',
   close_on_exit = true, -- close the terminal window when the process exits
   shell = vim.o.shell, -- change the default shell
   -- This field is only relevant if direction is set to 'float'
@@ -37,16 +37,16 @@ require("toggleterm").setup({
     },
   },
 })
-map("t", "<ESC>", "<C-\\><C-n>", { noremap = true, silent = true }) -- back to normal mode in Terminal
+map("t", "<ESC>", "<c-\\><c-n>", { noremap = true, silent = true }) -- back to normal mode in Terminal
 
 -- Better navigation to and from terminal
 local set_terminal_keymaps = function()
   local opts = { noremap = true }
-  buf_map(0, "t", "<esc>", [[<C-\><C-n>]], opts)
-  buf_map(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
-  buf_map(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
-  buf_map(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
-  buf_map(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
+  buf_map(0, "t", "<esc>", [[<c-\><c-n>]], opts)
+  buf_map(0, "t", "<C-h>", [[<c-\><c-n><C-W>h]], opts)
+  buf_map(0, "t", "<C-j>", [[<c-\><c-n><C-W>j]], opts)
+  buf_map(0, "t", "<C-k>", [[<c-\><c-n><C-W>k]], opts)
+  buf_map(0, "t", "<C-l>", [[<c-\><c-n><C-W>l]], opts)
 end
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.api.nvim_create_autocmd("TermOpen", {

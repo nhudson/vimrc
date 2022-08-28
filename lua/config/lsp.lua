@@ -33,6 +33,7 @@ local servers = {
   "dockerls",
   "jsonls",
   "pyright",
+  "rust_analyzer",
   "sumneko_lua",
   "terraformls",
   "texlab",

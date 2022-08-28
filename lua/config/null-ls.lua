@@ -17,6 +17,7 @@ nls.setup({
     }),
     nls.builtins.code_actions.shellcheck,
     nls.builtins.diagnostics.vale,
+    nls.builtins.diagnostics.markdownlint,
   },
   on_attach = function(client, bufnr)
     if client.supports_method("textDocument/formatting") then
