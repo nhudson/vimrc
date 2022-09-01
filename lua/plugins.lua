@@ -169,7 +169,8 @@ packer.startup(function(use)
 
   use("ironhouzi/starlite-nvim")
 
-  use({ "folke/which-key.nvim", config = get_config("which-key") })
+  -- Forked from https://github.com/folke/which-key.nvim to fix bug with neovim 0.8.0
+  use({ "nhudson/which-key.nvim", branch = "neovim-fix-maparg", config = get_config("which-key") })
 
   use("junegunn/vim-easy-align") -- no lua alternative, https://github.com/Vonr/align.nvim not working for me
 
