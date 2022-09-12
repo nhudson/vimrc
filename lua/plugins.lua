@@ -325,6 +325,25 @@ packer.startup(function(use)
   use({ "simrat39/rust-tools.nvim" })
   --use({ "christianchiarulli/rust-tools.nvim", branch = "modularize_and_inlay_rewrite" })
   --use({ "Saecki/crates.nvim", after = { "nvim-lua/plenary.nvim" }, config = get_config("crates") })
+
+  -- Install Github Copilot
+  use({ "github/copilot.vim", config = get_config("copilot") })
+  --  use({
+  --    "zbirenbaum/copilot.lua",
+  --    event = { "VimEnter" },
+  --    config = function()
+  --      vim.defer_fn(function()
+  --        require("config.copilot")
+  --      end, 100)
+  --    end,
+  --  })
+  --  use({
+  --    "zbirenbaum/copilot-cmp",
+  --    after = "copilot.lua",
+  --    config = function()
+  --      require("copilot_cmp").setup()
+  --    end,
+  --  })
 end)
 
 -- TODO: ????

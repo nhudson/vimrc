@@ -1,7 +1,7 @@
 local M = {}
 
 -- theme: gruvbox, gruvbox-flat, tundra; default is catppuccino
-M.theme = "tundra"
+M.theme = "gruvbox"
 -- Toggle global status line
 M.global_statusline = true
 -- use rg instead of grep

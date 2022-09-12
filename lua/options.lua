@@ -70,3 +70,5 @@ o.wildignore = [[
 ]]
 -- Disable providers I don't care about
 g.loaded_perl_provider = 0
+-- Set nodejs version for Copilot
+g.copilot_node_command = "~/Downloads/node-v16.16.0/bin/node"
