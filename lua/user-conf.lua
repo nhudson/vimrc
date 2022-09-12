@@ -1,7 +1,7 @@
 local M = {}
 
--- theme: gruvbox, gruvbox-flat; default is catppuccino
-M.theme = "gruvbox-flat"
+-- theme: gruvbox, gruvbox-flat, tundra; default is catppuccino
+M.theme = "tundra"
 -- Toggle global status line
 M.global_statusline = true
 -- use rg instead of grep
@@ -22,5 +22,13 @@ M.listchars = "eol:¬,tab:>·,trail:~,extends:>,precedes:<"
 M.packer_auto_sync = true
 -- set cmdheight
 M.cmdheight = 0
+-- Disable integration of Neovim's statusline in your Tmux status
+-- See https://github.com/vimpostor/vim-tpipeline#installation
+M.disable_tmux_statusline_integration = false
+-- Disable https://github.com/norcalli/nvim-colorizer.lua
+-- due to causing lags with live_grep in some circumstances
+M.disable_colorizer = false
+-- Disable winbar with nvim-navic location
+M.disable_winbar = false
 
 return M

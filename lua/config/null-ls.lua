@@ -17,9 +17,15 @@ nls.setup({
     }),
     nls.builtins.code_actions.shellcheck,
     nls.builtins.diagnostics.vale,
-    nls.builtins.diagnostics.markdownlint,
   },
   on_attach = function(client, bufnr)
+    local wk = require("which-key")
+    local default_options = { silent = true }
+    wk.register({
+      m = {
+        F = { "<cmd>lua require('functions').toggle_autoformat()<cr>", "Toggle format on save" },
+      },
+    }, { prefix = "<leader>", mode = "n", default_options })
     if client.supports_method("textDocument/formatting") then
       vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
       vim.api.nvim_create_autocmd("BufWritePre", {

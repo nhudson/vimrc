@@ -78,7 +78,6 @@ local default_options = { silent = true }
 
 -- register non leader based mappings
 wk.register({
-  ga = { "<Plug>(EasyAlign)", "Align", mode = "x" },
   sa = "Add surrounding",
   sd = "Delete surrounding",
   sh = "Highlight surrounding",
@@ -86,18 +85,13 @@ wk.register({
   sr = "Replace surrounding",
   sF = "Find left surrounding",
   sf = "Replace right surrounding",
-  ss = { "<Plug>Lightspeed_s", "Search 2-character forward" },
-  -- SS = {"<Plug>Lightspeed_S", "Search 2-character backward"}
+  ss = { "<cmd>lua MiniJump2d.start(MiniJump2d.builtin_opts.single_character)<cr>", "Jump to character" },
   st = { "<cmd>lua require('tsht').nodes()<cr>", "TS hint textobject" },
 })
 
 -- Register all leader based mappings
 wk.register({
   ["<Tab>"] = { "<cmd>e#<cr>", "Prev buffer" },
-  ["<leader>"] = {
-    name = "Leader",
-    a = { "<cmd>lua print('fasfAS')<cr>", "test" },
-  },
   b = {
     name = "Buffers",
     b = {
@@ -108,14 +102,13 @@ wk.register({
       "<cmd>%bd|e#|bd#<cr>",
       "Close all but the current buffer",
     },
-    d = { "<cmd>Bdelete!<CR>", "Close buffer" },
+    d = { "<cmd>lua MiniBufremove.delete()<CR>", "Close buffer" },
   },
   f = {
     name = "Files",
-    b = { "<cmd>Telescope file_browser<cr>", "File browser" },
+    b = { "<cmd>Telescope file_browser grouped=true<cr>", "File browser" },
     f = { "<cmd>Telescope find_files<cr>", "Find File" },
-    l = { "<cmd>Lf<cr>", "Open LF" },
-    p = { "<cmd>NvimTreeToggle<cr>", "Toggle Filetree" },
+    p = { "<cmd>Neotree reveal toggle<cr>", "Toggle Filetree" },
     r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
     s = { "<cmd>w<cr>", "Save Buffer" },
     z = { "<cmd>Telescope zoxide list<CR>", "Zoxide" },
@@ -127,16 +120,13 @@ wk.register({
       "<cmd>lua require'telegraph'.telegraph({cmd='gitui', how='tmux_popup'})<cr>",
       "Test Telegraph",
     },
-    c = { "<cmd>CheatSH<cr>", "Cht.sh" },
-    C = { "<cmd>lua require('functions').toggle_colorcolumn()<cr>", "Toggle Colorcolumn" },
+    c = { "<cmd>lua require('functions').toggle_colorcolumn()<cr>", "Toggle Colorcolumn" },
     d = { "<cmd>lua require('functions').toggle_diagnostics()<cr>", "Toggle Diagnostics" },
-    f = { "<cmd>FocusToggle<cr>", "Toggle Focus" },
     i = { "<cmd>IlluminateToggle<cr>", "Toggle Illuminate" },
     l = { "<cmd>source ~/.config/nvim/snippets/*<cr>", "Reload snippets" },
     o = { "Options" },
-    p = { "<cmd>PackerSync<cr>", "PackerSync" },
+    p = { "<cmd>PackerSync --preview<cr>", "PackerSync" },
     s = { "<cmd>SymbolsOutline<cr>", "Toggle SymbolsOutline" },
-    t = { "<cmd>FloatermNew --autoclose=2<cr>", "New Floaterm" },
   },
   q = {
     name = "Quickfix",

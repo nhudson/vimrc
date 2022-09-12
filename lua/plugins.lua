@@ -50,11 +50,27 @@ packer.startup(function(use)
   use({ "crispgm/telescope-heading.nvim" })
   use({ "nvim-telescope/telescope-symbols.nvim" })
   use({ "nvim-telescope/telescope-file-browser.nvim" })
-  use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
   use({ "nvim-telescope/telescope-packer.nvim" })
   use({ "nvim-telescope/telescope-ui-select.nvim" })
+  use({ "ptethng/telescope-makefile" })
 
-  use({ "kyazdani42/nvim-tree.lua", config = get_config("nvim-tree") })
+  use({
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v2.x",
+    requires = {
+      {
+        -- only needed if you want to use the commands with "_with_window_picker" suffix
+        "s1n7ax/nvim-window-picker",
+        config = get_config("nvim-window-picker"),
+      },
+      "nvim-lua/plenary.nvim",
+      "kyazdani42/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    },
+    config = get_config("neotree"),
+  })
+
+  --use({ "kyazdani42/nvim-tree.lua", config = get_config("nvim-tree") })
 
   use({ "numToStr/Navigator.nvim", config = get_config("navigator") })
 
@@ -77,7 +93,6 @@ packer.startup(function(use)
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
-      "f3fora/cmp-spell",
       "hrsh7th/cmp-calc",
       "lukas-reineke/cmp-rg",
       "hrsh7th/cmp-nvim-lsp-signature-help",
@@ -92,21 +107,21 @@ packer.startup(function(use)
     config = get_config("luasnip"),
   })
 
-  -- requirement for Neogit
-  use({
-    "sindrets/diffview.nvim",
-    cmd = {
-      "DiffviewOpen",
-      "DiffviewClose",
-      "DiffviewToggleFiles",
-      "DiffviewFocusFiles",
-    },
-    config = get_config("diffview"),
-  })
-
   use({
     "TimUntersberger/neogit",
-    requires = { "nvim-lua/plenary.nvim" },
+    requires = {
+      "nvim-lua/plenary.nvim",
+      {
+        "sindrets/diffview.nvim",
+        cmd = {
+          "DiffviewOpen",
+          "DiffviewClose",
+          "DiffviewToggleFiles",
+          "DiffviewFocusFiles",
+        },
+        config = get_config("diffview"),
+      },
+    },
     cmd = "Neogit",
     config = get_config("neogit"),
   })
@@ -125,14 +140,17 @@ packer.startup(function(use)
 
   use({
     "kevinhwang91/nvim-bqf",
-    requires = { { "junegunn/fzf", module = "nvim-bqf" }, config = get_config("nvim-bqf") },
+    requires = {
+      "junegunn/fzf",
+      module = "nvim-bqf",
+    },
+    ft = "qf",
+    config = get_config("nvim-bqf"),
   })
-
-  use("famiu/bufdelete.nvim")
 
   use({ "neovim/nvim-lspconfig", config = get_config("lsp") })
 
-  use({ "onsails/lspkind-nvim", requires = { "famiu/bufdelete.nvim" } })
+  use({ "onsails/lspkind-nvim" })
 
   use({
     "jose-elias-alvarez/null-ls.nvim",
@@ -149,12 +167,11 @@ packer.startup(function(use)
   use({
     "lukas-reineke/indent-blankline.nvim",
     event = "BufReadPre",
-    config = [[require("config/indent-blankline")]],
+    config = get_config("indent-blankline"),
   })
 
   use({
     "akinsho/nvim-toggleterm.lua",
-    keys = { "<C-n>", "<leader>fl" },
     config = get_config("toggleterm"),
   })
 
@@ -167,34 +184,31 @@ packer.startup(function(use)
 
   use({ "ahmedkhalf/project.nvim", config = get_config("project") })
 
-  use("ironhouzi/starlite-nvim")
+  use({ "folke/which-key.nvim", config = get_config("which-key") })
 
-  -- Forked from https://github.com/folke/which-key.nvim to fix bug with neovim 0.8.0
-  use({ "nhudson/which-key.nvim", branch = "neovim-fix-maparg", config = get_config("which-key") })
-
-  use("junegunn/vim-easy-align") -- no lua alternative, https://github.com/Vonr/align.nvim not working for me
+  use({ "junegunn/vim-easy-align", cmd = "EasyAlign" }) -- no lua alternative, https://github.com/Vonr/align.nvim not working for me
 
   use({ "rhysd/vim-grammarous", cmd = "GrammarousCheck" })
 
   use({ "RRethy/vim-illuminate", config = get_config("illuminate") })
 
-  use({
-    "ptzz/lf.vim",
-    requires = "voldikss/vim-floaterm",
-    config = get_config("lf"),
-  })
+  --use({
+  --  "ptzz/lf.vim",
+  --  requires = "voldikss/vim-floaterm",
+  --  config = get_config("lf"),
+  --})
 
   if settings.theme == "gruvbox" then
     use({ "ellisonleao/gruvbox.nvim", config = get_config("gruvbox") })
   elseif settings.theme == "gruvbox-flat" then
     use({ "eddyekofo94/gruvbox-flat.nvim", config = get_config("gruvbox-flat") })
+  elseif settings.theme == "tundra" then
+    use({ "sam4llis/nvim-tundra", config = get_config("tundra") })
   else
     use({ "ellisonleao/gruvbox.nvim", config = get_config("gruvbox") })
   end
 
   use({ "tweekmonster/startuptime.vim" })
-
-  use({ "ggandor/lightspeed.nvim" })
 
   use({ "ray-x/go.nvim", requires = "ray-x/guihua.lua", config = get_config("go"), ft = { "go" } })
 
@@ -205,18 +219,11 @@ packer.startup(function(use)
   use({ "echasnovski/mini.nvim", branch = "stable", config = get_config("mini") })
 
   use({
-    "https://gitlab.com/yorickpeterse/nvim-window.git",
-    config = get_config("nvim-window"),
-  })
-
-  use({
     "waylonwalker/Telegraph.nvim",
     config = function()
       require("telegraph").setup({})
     end,
   })
-
-  use({ "rhysd/conflict-marker.vim" })
 
   use({ "edluffy/specs.nvim", config = get_config("specs") })
 
@@ -252,9 +259,7 @@ packer.startup(function(use)
     end,
   })
 
-  use({ "Djancyp/cheat-sheet" })
-
-  use({ "vimpostor/vim-tpipeline" })
+  use({ "vimpostor/vim-tpipeline", disable = settings.disable_tmux_statusline_integration })
 
   use({
     "anuvyklack/hydra.nvim",
@@ -266,13 +271,6 @@ packer.startup(function(use)
     "windwp/nvim-ts-autotag",
     config = function()
       require("nvim-ts-autotag").setup()
-    end,
-  })
-
-  use({
-    "beauwilliams/focus.nvim",
-    config = function()
-      require("focus").setup()
     end,
   })
 
@@ -295,6 +293,31 @@ packer.startup(function(use)
     end,
   })
 
+  use({
+    "max397574/colortils.nvim",
+    cmd = "Colortils",
+    config = function()
+      require("colortils").setup()
+    end,
+  })
+
+  use({
+    "aarondiel/spread.nvim",
+    after = "nvim-treesitter",
+    config = get_config("spread"),
+  })
+
+  -- NOTE: use https://github.com/Akianonymus/nvim-colorizer.lua ?
+  -- NOTE: use https://github.com/NvChad/nvim-colorizer.lua ?
+  use({
+    "norcalli/nvim-colorizer.lua",
+    ft = { "scss", "css", "html" },
+    config = function()
+      require("colorizer").setup()
+    end,
+    disable = settings.disable_colorizer,
+  })
+
   -- Markdown
   use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", ft = "markdown" })
 
@@ -308,3 +331,15 @@ end)
 -- use {"lukas-reineke/headlines.nvim", config = get_config("headlines")}
 -- https://github.com/glepnir/lspsaga.nvim
 -- use 'glepnir/lspsaga.nvim'
+-- TODO:
+-- use({
+--   "someone-stole-my-name/yaml-companion.nvim",
+--   requires = {
+--     { "neovim/nvim-lspconfig" },
+--     { "nvim-lua/plenary.nvim" },
+--     { "nvim-telescope/telescope.nvim" },
+--   },
+--   config = function()
+--     require("telescope").load_extension("yaml_schema")
+--   end,
+-- })
