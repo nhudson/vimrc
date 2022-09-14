@@ -156,6 +156,7 @@ packer.startup(function(use)
     "jose-elias-alvarez/null-ls.nvim",
     requires = { { "nvim-lua/plenary.nvim" } },
     config = get_config("null-ls"),
+    commit = "cdef04dfad2d1a6d76f596ac63600e7430baaabe",
   })
 
   use({
