@@ -178,7 +178,6 @@ packer.startup(function(use)
     config = get_config("toggleterm"),
   })
 
-  -- TODO: switch to https://github.com/folke/todo-comments.nvim ?
   use({
     "folke/todo-comments.nvim",
     requires = "nvim-lua/plenary.nvim",
@@ -356,20 +355,3 @@ packer.startup(function(use)
     config = get_config("windows"),
   })
 end)
-
--- TODO: ????
--- use {"lukas-reineke/headlines.nvim", config = get_config("headlines")}
--- https://github.com/glepnir/lspsaga.nvim
--- use 'glepnir/lspsaga.nvim'
--- TODO:
--- use({
---   "someone-stole-my-name/yaml-companion.nvim",
---   requires = {
---     { "neovim/nvim-lspconfig" },
---     { "nvim-lua/plenary.nvim" },
---     { "nvim-telescope/telescope.nvim" },
---   },
---   config = function()
---     require("telescope").load_extension("yaml_schema")
---   end,
--- })
